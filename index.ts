@@ -39,3 +39,20 @@ const ts_prepared = await client.autofill(trustSet_tx)
 const ts_signed = standby_wallet.sign(ts_prepared)
 const ts_tx = await client.submitAndWait(ts_signed.tx_blob)
 
+const send_token_tx = {
+    "TransactionType": "Payment",
+    "Account": standby_wallet.address,
+    "Amount": {
+        "currency": standbyCurrencyField.value,
+        "value": standbyCurrencyField.value,
+        "issuer": standby_wallet.address
+    },
+    "Destination": standbyDestinationField.value
+}
+
+const pay_prepared = await client.autofill(send_token_tx)
+const pay_signed = standby_wallet.sign(pay_prepared) 
+    results += 'Sending ${issue_quantity} ${currency_code} to ' +
+    standbyDestinationField.value + '...' 
+    standbyResultField.value = results
+const pay_result = await client.submitAndWait(pay_signed.tx_blob)
